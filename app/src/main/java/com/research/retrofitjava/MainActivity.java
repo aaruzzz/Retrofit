@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
     private TextView nameTextResult;
     private TextView cityTextResult;
+    private JsonPlaceHolderApi jsonPlaceHolderApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 //<<<<!!!!-------  Retrofit TEST GET JSON DATA FROM dummyjson.com/users  -------!!!!>>>>
 //  <<<<!!!!-------         Includes UsersPlaceHolderApi, Users         -------!!!!>>>>
 
+/*
         nameTextResult = findViewById(R.id.name_text);
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://dummyjson.com/").addConverterFactory(GsonConverterFactory.create()).build();
@@ -151,8 +155,142 @@ public class MainActivity extends AppCompatActivity {
                 nameTextResult.setText(t.getMessage());
             }
         });
+*/
 
 
+//<<<<!!!!-------  Retrofit TEST POST, PATCH, PUT JSON DATA jsonplaceholder.typicode.com/posts  -------!!!!>>>>
+//          <<<<!!!!-------             Includes JsonPlaceHolderApi, Post             -------!!!!>>>>
+
+
+        textViewResult = findViewById(R.id.name_text);
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://jsonplaceholder.typicode.com/").addConverterFactory(GsonConverterFactory.create()).build();
+        jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+//        createPost();
+//        updatePost();
+//        patchPost();
+        deletePost();
+    }
+
+    private void createPost(){
+
+        Post post = new Post(23, "Title1", "Test Text");
+
+//        Call<Post> call = jsonPlaceHolderApi.createPost(post);
+
+//        Using FormUrlEncoded such as: Value goes encoded in URL like userId=23&title=Title1&body=Test%20text%202
+//        Call<Post> call = jsonPlaceHolderApi.createPost(23, "Title1","Test text 2");
+
+//        Using Fieldmap to pass arrays/lists multiple times
+        Map<String, String> fields = new HashMap<>();
+        fields.put("userId", "25");
+        fields.put("title", "New Title");
+
+        Call<Post> call = jsonPlaceHolderApi.createPost(fields);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if(!response.isSuccessful()){
+                    textViewResult.setText("Code error: "+response.code());
+                    return;
+                }
+                Post postResponse = response.body();
+
+                    String content = "";
+                    content += "Code: " + response.code() + "\n";
+                    content += "ID: " + postResponse.getId();
+                    content += "\nUserID: " + postResponse.getUserId();
+                    content += "\nTitle: " + postResponse.getTitle();
+                    content += "\nBody: " + postResponse.getText();
+
+                    textViewResult.setText(content);
+
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+    }
+
+    private void updatePost(){
+        Post post = new Post(13,null,"Updated text");
+        Call<Post> call = jsonPlaceHolderApi.putPost(5, post);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if(!response.isSuccessful()){
+                    textViewResult.setText("Code error: "+response.code());
+                    return;
+                }
+                Post postResponse = response.body();
+
+                String content = "";
+                content += "Code: " + response.code() + "\n";
+                content += "ID: " + postResponse.getId();
+                content += "\nUserID: " + postResponse.getUserId();
+                content += "\nTitle: " + postResponse.getTitle();
+                content += "\nBody: " + postResponse.getText();
+
+                textViewResult.setText(content);
+
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+    }
+
+
+    private void patchPost(){
+        Post post = new Post(13,null,"Updated text");
+        Call<Post> call = jsonPlaceHolderApi.patchPost(5, post);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if(!response.isSuccessful()){
+                    textViewResult.setText("Code error: "+response.code());
+                    return;
+                }
+                Post postResponse = response.body();
+
+                String content = "";
+                content += "Code: " + response.code() + "\n";
+                content += "ID: " + postResponse.getId();
+                content += "\nUserID: " + postResponse.getUserId();
+                content += "\nTitle: " + postResponse.getTitle();
+                content += "\nBody: " + postResponse.getText();
+
+                textViewResult.setText(content);
+
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+    }
+
+    private void deletePost(){
+        Call<Void> call = jsonPlaceHolderApi.deletePost(5);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                    textViewResult.setText("Code error: "+response.code());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
 
     }
+
+
 }

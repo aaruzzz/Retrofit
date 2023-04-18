@@ -3,12 +3,21 @@ package com.research.retrofitjava;
 import com.google.gson.annotations.SerializedName;
 
 public class Post {
+
     private int userId;
-    private int id;
+    private Integer id;
     private String title;
     @SerializedName("body")
     private String text;
 
+    //Constructors For POST
+    public Post(int userId, String title, String text) {
+        this.userId = userId;
+        this.title = title;
+        this.text = text;
+    }
+
+    //Getter and Setter for GET
     public int getUserId() {
 
         return userId;
