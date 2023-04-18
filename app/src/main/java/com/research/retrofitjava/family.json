@@ -1,0 +1,23 @@
+{
+  "address": {
+    "city": "Kathmandu",
+    "country": "Nepal"
+  },
+  "age": 999999999,
+  "family": [
+    {
+      "age": 45,
+      "role": "Father"
+    },
+    {
+      "age": 42,
+      "role": "Mother"
+    },
+    {
+      "age": 22,
+      "role": "Son"
+    }
+  ],
+  "first_name": "World",
+  "mail": "helloworld@gmail.com"
+}

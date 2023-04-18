@@ -1,0 +1,12 @@
+{
+  "planet1": {
+    "age": 999999999,
+    "firstName": "World",
+    "mail": "helloworld@gmail.com"
+  },
+  "planet2": {
+    "age": 96,
+    "firstName": "Pluto",
+    "mail": "hellopuluto@gmail.com"
+  }
+}
